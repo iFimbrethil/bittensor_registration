@@ -35,7 +35,7 @@ echo 'import os' > register.py
 echo 'import bittensor' >> register.py
 echo 'os.remove(".bittensor/wallets/default/hotkeys/default")' >> register.py
 echo 'os.system("btcli new_hotkey --wallet.name default --hotkey.name default --no_prompt")' >> register.py
-echo 'os.system("btcli register --no_prompt --wallet.name default --wallet.hotkey default --cuda.device true --netuid 1")' >> register.py
+echo 'os.system("btcli register --no_prompt --wallet.name default --wallet.hotkey default --cuda.use_cuda --cuda.dev 0 1 2 3 4 5 6 7 --netuid 1")' >> register.py
 echo "register.py file has been created."
 
 # Write ecosystem.config.js file
@@ -45,12 +45,13 @@ echo "  apps: [" >> ecosystem.config.js
 echo "    {" >> ecosystem.config.js
 echo "      name: 'register'," >> ecosystem.config.js
 echo "      script: 'python3'," >> ecosystem.config.js
-echo "      args: 'register.py --no_prompt --wallet.name default --wallet.hotkey default --cuda.device true'" >> ecosystem.config.js
+echo "      args: 'register.py --no_prompt --wallet.name default --wallet.hotkey default --cuda.use_cuda --cuda.dev_id 0 1 2 3 4 5 6 7'" >> ecosystem.config.js
 echo "    }," >> ecosystem.config.js
 echo "  ]," >> ecosystem.config.js
 echo "};" >> ecosystem.config.js
 echo "ecosystem.config.js file has been created."
 
 # Execute register.py
-echo "Executing register.py..."
-python3 register.py
+echo "Starting registration in PM2..."
+pm2 start ecosystem.config.js
+echo "registration started!"
